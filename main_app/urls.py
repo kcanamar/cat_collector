@@ -8,4 +8,13 @@ urlpatterns = [
     path('cats/', views.cat_index, name="index"),
     # show route for cat
     path('cats/<int:cat_id>/', views.cats_detail, name="detail"),
+    # create a new cat 
+    path('cats/create/', views.CatCreate.as_view(), name="create_cat"),
+    # update a cat
+    path('cats/<int:pk>/update/', views.CatUpdate.as_view(), name='update_cat'),
+    # re-home a cat
+    path('cats/<int:pk>/delete/', views.CatDelete.as_view(), name='delete_cat'),
+    
+    # Feedings
+    path('cats/<int:cat_id>/add_feeding/', views.add_feeding, name='add_feeding'),
 ]
