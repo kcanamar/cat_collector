@@ -1,26 +1,21 @@
 from django.shortcuts import render
+from .models import Cat
 
 # Add the following import
-from django.http import HttpResponse
-
-class Cat:
-    def __init__(self, name, breed, description, age):
-        self.name = name
-        self.breed = breed
-        self.description = description
-        self.age = age
-
-cats = [
-    Cat('Lolo', 'tabby', 'foul little demon', 3),
-    Cat('Sachi', 'tortoise shell', 'diluted tortoise shell', 0),
-    Cat('Raven', 'black tripod', '3 legged cat', 4)
-]
 
 def home(request):
-    return HttpResponse('<h1>Hello Cats</h1>')
+    return render(request, 'home.html')
 
 def about(request):
     return render(request, 'about.html')
 
 def cat_index(request):
+    cats = Cat.objects.order_by('id')
     return render(request, 'cats/index.html', { 'cats': cats })
+
+def cats_detail(request, cat_id):
+    # Get the individual cat
+    cat = Cat.objects.get(id=cat_id)
+    # Render template, passing the cat data
+    return render(request, 'cats/detail.html', { 'cat': cat })
+
