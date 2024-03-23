@@ -54,6 +54,56 @@
       </table>
     </div>
   </div>
+  <!-- Toys The cat likes to play with -->
+  <hr>
+  <div class="row">
+    <div class="col s6">
+      <h3>{{ cat.name }}'s Toys</h3>
+      {% if cat.toys.count %}
+        {% for toy in cat.toys.all %}
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title">
+                A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{ toy.name }}
+              </span>
+            </div>
+            <div class="card-action">
+              <form action="{% url 'remove_toy' cat.id toy.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn">Remove</button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <h5>No Toys yet...</h5>
+      {% endif %}
+    </div>
+
+    <!-- Available toys go here -->
+    <div class="col s6">
+      <h3>Available Toys</h3>
+      {% if toys.count %}
+        {% for toy in toys.all %}
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title">
+                A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{ toy.name }}
+              </span>
+            </div>
+            <div class="card-action">
+              <form action="{% url 'assoc_toy' cat.id toy.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn">Add</button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <h5>{{ cat.name }} Already Has All Toys Available</h5>
+      {% endif %}
+    </div>
+  </div>
 
 <!-- JS to create a date picker and init the meal dropdown -->
 <!-- Don't for get to add script tag to head in base.html  -->

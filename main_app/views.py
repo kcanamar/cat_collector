@@ -22,13 +22,19 @@ def cats_detail(request, cat_id):
     cat = Cat.objects.get(id=cat_id)
     # instantiate the FeedingForm to be rendered in the template
     feeding_form = FeedingForm()
+    
+    # Get the Toys the cat doesn't have
+    toys_cat_doesnt_have = Toy.objects.exclude(id__in = cat.toys.all())
+    
     # Render template, passing the cat data
     return render(
         request, 
         'cats/detail.html', 
         { 
             'cat': cat,
-            'feeding_form': feeding_form
+            'feeding_form': feeding_form,
+            # Add the toys to be displayed
+            'toys': toys_cat_doesnt_have
         }
     )
 
@@ -79,3 +85,12 @@ class ToyUpdate(UpdateView):
 class ToyDelete(DeleteView):
     model = Toy
     success_url = '/toys/'
+
+def assoc_toy(request, cat_id, toy_id):
+    # Note you can pass a ty's id instead of the whole object
+    Cat.objects.get(id=cat_id).toys.add(toy_id)
+    return redirect('detail', cat_id=cat_id)
+
+def remove_toy(request, cat_id, toy_id):
+    Cat.objects.get(id=cat_id).toys.remove(toy_id)
+    return redirect('detail', cat_id=cat_id)
